@@ -1,51 +1,34 @@
 import 'package:flutter/material.dart';
 
-enum GEnumButtonWidth { max, min }
+enum ButtonWidth { max, min }
 
-enum EnumWidgetSize { md, lr, sm }
+enum ButtonSize { md, lr, sm }
 
-enum GEnumButtonType {
+enum ButtonType {
   textButton,
   filledButton,
-  outLinedButton,
-  bgOutLinedButton
 }
 
-class PackageButtonController {
-  VoidCallback? success;
-  VoidCallback? reset;
-  VoidCallback? error;
-  VoidCallback? loading;
-
-  void dispose() {
-    success = null;
-    reset = null;
-    error = null;
-    loading = null;
-  }
-}
-
-class PackageButton extends StatefulWidget {
+class WidgetButton extends StatefulWidget {
   final IconData? frontIcon;
   final IconData? backIcon;
   final Widget? widgetFrontIcon;
   final Widget? widgetBackIcon;
   final String? frontIconUrl;
   final String? backIconUrl;
-  final String title;
+  final String? title;
   final TextStyle? textStyle;
   final Color? color;
   final Color? progressColor;
   final BorderSide? borders;
   final Function onPressed;
   final OutlinedBorder? borderRadius;
-  final EnumWidgetSize? size;
-  final GEnumButtonWidth? enumButtonWidth;
-  final PackageButtonController? controller;
-  final GEnumButtonType? enumButtonType;
+  final ButtonSize? size;
+  final ButtonWidth? enumButtonWidth;
+  final ButtonType? enumButtonType;
   final Color? iconColor;
   final double? iconSize;
-  PackageButton(
+  WidgetButton(
       {this.frontIcon,
       this.backIcon,
       required this.title,
@@ -55,7 +38,6 @@ class PackageButton extends StatefulWidget {
       this.borderRadius,
       this.size,
       this.enumButtonWidth,
-      this.controller,
       this.enumButtonType,
       required this.onPressed,
       this.widgetFrontIcon,
@@ -67,58 +49,13 @@ class PackageButton extends StatefulWidget {
       this.iconSize});
 
   @override
-  State<PackageButton> createState() => _PackageButtonState();
+  State<WidgetButton> createState() => _WidgetButtonState();
 }
 
-class _PackageButtonState extends State<PackageButton> {
-  PackageButtonController? controller;
-  bool isPressed = false;
-  bool isErrorOccured = false;
-  bool isSuccess = false;
-
+class _WidgetButtonState extends State<WidgetButton> {
   @override
   void initState() {
     super.initState();
-
-    controller = widget.controller;
-    if (controller != null) {
-      controller!.loading = loading;
-      controller!.success = success;
-      controller!.reset = reset;
-      controller!.error = error;
-    }
-  }
-
-  success() {
-    setState(() {
-      isSuccess = true;
-      isErrorOccured = false;
-      isPressed = false;
-    });
-  }
-
-  loading() {
-    setState(() {
-      isPressed = true;
-      isErrorOccured = false;
-      isSuccess = false;
-    });
-  }
-
-  reset() {
-    setState(() {
-      isPressed = false;
-      isErrorOccured = false;
-      isSuccess = false;
-    });
-  }
-
-  error() {
-    setState(() {
-      isPressed = false;
-      isErrorOccured = true;
-      isSuccess = false;
-    });
   }
 
   Widget showIconImage(
@@ -142,8 +79,7 @@ class _PackageButtonState extends State<PackageButton> {
                     imageUrl,
                     color: widget.iconColor != null
                         ? widget.iconColor
-                        : widget.enumButtonType ==
-                                    GEnumButtonType.filledButton ||
+                        : widget.enumButtonType == ButtonType.filledButton ||
                                 widget.enumButtonType == null
                             ? Colors.white
                             : Theme.of(context).primaryColorDark,
@@ -155,11 +91,11 @@ class _PackageButtonState extends State<PackageButton> {
                             ? widget.iconSize
                             : () {
                                 switch (widget.size) {
-                                  case EnumWidgetSize.lr:
+                                  case ButtonSize.lr:
                                     return 32.0;
-                                  case EnumWidgetSize.md:
+                                  case ButtonSize.md:
                                     return 26.0;
-                                  case EnumWidgetSize.sm:
+                                  case ButtonSize.sm:
                                     return 20.0;
                                   default:
                                     return 26.0;
@@ -168,7 +104,7 @@ class _PackageButtonState extends State<PackageButton> {
                         color: widget.iconColor != null
                             ? widget.iconColor
                             : widget.enumButtonType ==
-                                        GEnumButtonType.filledButton ||
+                                        ButtonType.filledButton ||
                                     widget.enumButtonType == null
                                 ? Colors.white
                                 : Theme.of(context).primaryColorDark,
@@ -182,14 +118,10 @@ class _PackageButtonState extends State<PackageButton> {
             icon,
             color: () {
               switch (widget.enumButtonType) {
-                case GEnumButtonType.filledButton:
+                case ButtonType.filledButton:
                   return Colors.white;
-                case GEnumButtonType.textButton:
-                  return isErrorOccured ? Colors.red : Colors.green;
-                case GEnumButtonType.outLinedButton:
-                  return isErrorOccured ? Colors.red : Colors.green;
-                case GEnumButtonType.bgOutLinedButton:
-                  return isErrorOccured ? Colors.red : Colors.green;
+                case ButtonType.textButton:
+                  return Colors.green;
                 default:
                   return Colors.white;
               }
@@ -210,33 +142,33 @@ class _PackageButtonState extends State<PackageButton> {
                       imageUrl: widget.frontIconUrl,
                       rightMargin: () {
                         switch (widget.size) {
-                          case EnumWidgetSize.lr:
+                          case ButtonSize.lr:
                             return 8.0;
-                          case EnumWidgetSize.md:
+                          case ButtonSize.md:
                             return 5.0;
-                          case EnumWidgetSize.sm:
+                          case ButtonSize.sm:
                             return 7.0;
                           default:
                             return 5.0;
                         }
                       }()),
                 Text(
-                  widget.title == null ? "Title" : widget.title,
+                  widget.title == null ? "Title" : widget.title!,
                   style: widget.textStyle != null
                       ? widget.textStyle
                       : TextStyle(
                           color: widget.enumButtonType ==
-                                      GEnumButtonType.filledButton ||
+                                      ButtonType.filledButton ||
                                   widget.enumButtonType == null
                               ? Colors.white
                               : Theme.of(context).primaryColorDark,
                           fontSize: () {
                             switch (widget.size) {
-                              case EnumWidgetSize.lr:
+                              case ButtonSize.lr:
                                 return 17.0;
-                              case EnumWidgetSize.md:
+                              case ButtonSize.md:
                                 return 15.0;
-                              case EnumWidgetSize.sm:
+                              case ButtonSize.sm:
                                 return 12.0;
                               default:
                                 return 15.0;
@@ -252,11 +184,11 @@ class _PackageButtonState extends State<PackageButton> {
                       imageUrl: widget.backIconUrl,
                       leftMargin: () {
                         switch (widget.size) {
-                          case EnumWidgetSize.lr:
+                          case ButtonSize.lr:
                             return 8.0;
-                          case EnumWidgetSize.md:
+                          case ButtonSize.md:
                             return 5.0;
-                          case EnumWidgetSize.sm:
+                          case ButtonSize.sm:
                             return 7.0;
                           default:
                             return 5.0;
@@ -269,11 +201,11 @@ class _PackageButtonState extends State<PackageButton> {
 
   double iconHeightWidth() {
     switch (widget.size) {
-      case EnumWidgetSize.lr:
+      case ButtonSize.lr:
         return 30;
-      case EnumWidgetSize.md:
+      case ButtonSize.md:
         return 24;
-      case EnumWidgetSize.sm:
+      case ButtonSize.sm:
         return 15;
       default:
         return 20;
@@ -282,11 +214,11 @@ class _PackageButtonState extends State<PackageButton> {
 
   double heightWidth() {
     switch (widget.size) {
-      case EnumWidgetSize.lr:
+      case ButtonSize.lr:
         return 27;
-      case EnumWidgetSize.md:
+      case ButtonSize.md:
         return 17;
-      case EnumWidgetSize.sm:
+      case ButtonSize.sm:
         return 10;
       default:
         return 15;
@@ -295,11 +227,11 @@ class _PackageButtonState extends State<PackageButton> {
 
   double height() {
     switch (widget.size) {
-      case EnumWidgetSize.lr:
+      case ButtonSize.lr:
         return 48;
-      case EnumWidgetSize.md:
+      case ButtonSize.md:
         return 40;
-      case EnumWidgetSize.sm:
+      case ButtonSize.sm:
         return 32;
       default:
         return 40;
@@ -314,9 +246,9 @@ class _PackageButtonState extends State<PackageButton> {
         child: Row(
           mainAxisSize: () {
             switch (widget.enumButtonWidth) {
-              case GEnumButtonWidth.max:
+              case ButtonWidth.max:
                 return MainAxisSize.max;
-              case GEnumButtonWidth.min:
+              case ButtonWidth.min:
                 return MainAxisSize.min;
               default:
                 return MainAxisSize.min;
@@ -324,148 +256,84 @@ class _PackageButtonState extends State<PackageButton> {
           }(),
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            isPressed == true && isErrorOccured == false && isSuccess == false
-                ? SizedBox(
-                    height: heightWidth(),
-                    width: heightWidth(),
-                    child: CircularProgressIndicator(
-                      strokeWidth: () {
-                        switch (widget.size) {
-                          case EnumWidgetSize.lr:
-                            return 4.0;
-                          case EnumWidgetSize.md:
-                            return 4.0;
-                          case EnumWidgetSize.sm:
-                            return 3.0;
-                          default:
-                            return 3.0;
-                        }
-                      }(),
-                      backgroundColor: Colors.white,
-                      valueColor: widget.color == null
-                          ? widget.progressColor != null
-                              ? AlwaysStoppedAnimation(widget.progressColor)
-                              : AlwaysStoppedAnimation<Color>(
-                                  Theme.of(context).primaryColorDark)
-                          : widget.progressColor != null
-                              ? AlwaysStoppedAnimation(widget.progressColor)
-                              : AlwaysStoppedAnimation<Color>(
-                                  Theme.of(context).primaryColorDark),
-                    ),
-                  )
-                : Center(
-                    child: child(
-                        icon: isErrorOccured
-                            ? Icons.error_outline
-                            : isSuccess
-                                ? Icons.check_circle
-                                : null),
-                  ),
+            SizedBox(
+              height: heightWidth(),
+              width: heightWidth(),
+              child: CircularProgressIndicator(
+                strokeWidth: () {
+                  switch (widget.size) {
+                    case ButtonSize.lr:
+                      return 4.0;
+                    case ButtonSize.md:
+                      return 4.0;
+                    case ButtonSize.sm:
+                      return 3.0;
+                    default:
+                      return 3.0;
+                  }
+                }(),
+                backgroundColor: Colors.white,
+                valueColor: widget.color == null
+                    ? widget.progressColor != null
+                        ? AlwaysStoppedAnimation(widget.progressColor)
+                        : AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColorDark)
+                    : widget.progressColor != null
+                        ? AlwaysStoppedAnimation(widget.progressColor)
+                        : AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).primaryColorDark),
+              ),
+            )
           ],
         ),
-        onPressed:
-            isPressed == true && isErrorOccured == false && isSuccess == false
-                ? null
-                : widget.onPressed == null
-                    ? null
-                    : () {
-                        if (!isSuccess) {
-                          if (!isErrorOccured) {
-                            widget.onPressed();
-                            FocusScope.of(context).unfocus();
-                          }
-                        }
-                      },
+        onPressed: () {
+          widget.onPressed();
+        },
         style: ElevatedButton.styleFrom(
-            elevation:
-                widget.enumButtonType == GEnumButtonType.filledButton ? 1 : 0,
+            elevation: widget.enumButtonType == ButtonType.filledButton ? 1 : 0,
             side: () {
               switch (widget.enumButtonType) {
-                case GEnumButtonType.filledButton:
+                case ButtonType.filledButton:
                   return widget.borders;
-                case GEnumButtonType.textButton:
+                case ButtonType.textButton:
                   return null;
-                case GEnumButtonType.outLinedButton:
-                  return isErrorOccured
-                      ? const BorderSide(color: Colors.red)
-                      : isSuccess
-                          ? const BorderSide(color: Colors.green)
-                          : widget.borders ??
-                              BorderSide(color: Theme.of(context).primaryColor);
-                case GEnumButtonType.bgOutLinedButton:
-                  return isErrorOccured
-                      ? const BorderSide(color: Colors.red)
-                      : isSuccess
-                          ? const BorderSide(color: Colors.green)
-                          : widget.color != null
-                              ? BorderSide(color: widget.color!)
-                              : BorderSide(
-                                  color: Theme.of(context).primaryColor);
                 default:
                   return widget.borders;
               }
             }(),
             primary: () {
               switch (widget.enumButtonType) {
-                case GEnumButtonType.filledButton:
-                  return isErrorOccured
-                      ? Colors.red
-                      : isSuccess
-                          ? Colors.green
-                          : widget.color ?? Theme.of(context).primaryColor;
-                case GEnumButtonType.textButton:
+                case ButtonType.filledButton:
+                  return widget.color ?? Theme.of(context).primaryColor;
+                case ButtonType.textButton:
                   return Colors.white;
-                case GEnumButtonType.outLinedButton:
-                  return Colors.white;
-                case GEnumButtonType.bgOutLinedButton:
-                  return isErrorOccured
-                      ? Colors.red.withOpacity(0.3)
-                      : isSuccess
-                          ? Colors.green.withOpacity(0.3)
-                          : widget.color != null
-                              ? widget.color!.withOpacity(0.3)
-                              : Theme.of(context).primaryColor.withOpacity(0.3);
                 default:
-                  return isErrorOccured
-                      ? Colors.red
-                      : isSuccess
-                          ? Colors.green
-                          : widget.color ?? Theme.of(context).primaryColor;
+                  return widget.color ?? Theme.of(context).primaryColor;
               }
             }(),
-            padding: isErrorOccured == true || isSuccess == true
-                ? null
-                : () {
-                    switch (widget.size) {
-                      case EnumWidgetSize.lr:
-                        return EdgeInsets.only(
-                            left: leftPadding(13, 25),
-                            right: rightPadding(13, 20));
-                      case EnumWidgetSize.md:
-                        return EdgeInsets.only(
-                            left: leftPadding(13, 25),
-                            right: rightPadding(10, 22));
-                      case EnumWidgetSize.sm:
-                        return EdgeInsets.only(
-                            left: leftPadding(13, 20),
-                            right: rightPadding(10, 17));
-                      default:
-                        return EdgeInsets.only(
-                            left: leftPadding(13, 25),
-                            right: rightPadding(10, 22));
-                    }
-                  }(),
+            padding: () {
+              switch (widget.size) {
+                case ButtonSize.lr:
+                  return EdgeInsets.only(
+                      left: leftPadding(13, 25), right: rightPadding(13, 20));
+                case ButtonSize.md:
+                  return EdgeInsets.only(
+                      left: leftPadding(13, 25), right: rightPadding(10, 22));
+                case ButtonSize.sm:
+                  return EdgeInsets.only(
+                      left: leftPadding(13, 20), right: rightPadding(10, 17));
+                default:
+                  return EdgeInsets.only(
+                      left: leftPadding(13, 25), right: rightPadding(10, 22));
+              }
+            }(),
             shape: () {
               switch (widget.enumButtonType) {
-                case GEnumButtonType.filledButton:
+                case ButtonType.filledButton:
                   return RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40));
-                case GEnumButtonType.textButton:
+                case ButtonType.textButton:
                   return null;
-                case GEnumButtonType.outLinedButton:
-                  return widget.borderRadius;
-                case GEnumButtonType.bgOutLinedButton:
-                  return widget.borderRadius;
                 default:
                   return RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40));
@@ -476,18 +344,14 @@ class _PackageButtonState extends State<PackageButton> {
   }
 
   double leftPadding(double left, double withoutIconPadding) {
-    return isPressed == true && isErrorOccured == false && isSuccess == false
-        ? withoutIconPadding
-        : widget.widgetFrontIcon != null || widget.frontIcon != null
-            ? left
-            : withoutIconPadding;
+    return widget.widgetFrontIcon != null || widget.frontIcon != null
+        ? left
+        : withoutIconPadding;
   }
 
   double rightPadding(double right, double withoutIconPadding) {
-    return isPressed == true && isErrorOccured == false && isSuccess == false
-        ? withoutIconPadding
-        : widget.backIcon != null || widget.widgetBackIcon != null
-            ? right
-            : withoutIconPadding;
+    return widget.backIcon != null || widget.widgetBackIcon != null
+        ? right
+        : withoutIconPadding;
   }
 }

@@ -1,8 +1,8 @@
 library fluttercalendar;
 
 import 'package:flutter/material.dart';
-import 'package:fluttercalendar/widgetButton.dart';
-import 'package:fluttercalendar/widgetText.dart';
+import '../widgetText.dart';
+import '../widgetButton.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -105,8 +105,8 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
   }
 
   showAlertDialog(BuildContext context) {
-    Widget okButton = PackageButton(
-      enumButtonType: GEnumButtonType.textButton,
+    Widget okButton = WidgetButton(
+      enumButtonType: ButtonType.textButton,
       title: "Cancel",
       onPressed: () {
         Navigator.of(context).pop();
@@ -176,8 +176,8 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
   }
 
   selectYearPopup(BuildContext context) {
-    Widget okButton = PackageButton(
-      enumButtonType: GEnumButtonType.textButton,
+    Widget okButton = WidgetButton(
+      enumButtonType: ButtonType.textButton,
       title: "Cancel",
       onPressed: () {
         Navigator.of(context).pop();
@@ -354,7 +354,7 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: PackageButton(
+                          child: WidgetButton(
                             title: "Cancel",
                             onPressed: () {
                               Navigator.pop(context);
@@ -374,7 +374,7 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                             margin: const EdgeInsets.only(
                               left: 5,
                             ),
-                            child: PackageButton(
+                            child: WidgetButton(
                               title: "Apply",
                               onPressed: () {
                                 DateTime tempDate = DateFormat("yyyy-MM-dd")
