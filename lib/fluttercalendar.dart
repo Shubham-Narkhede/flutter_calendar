@@ -27,16 +27,15 @@ class ModelDatePicker {
       this.shortMonthName});
 }
 
-class WidgetCustomDatePicker extends StatefulWidget {
+class FlutterCustomCalendar extends StatefulWidget {
   final Function(DateTime) dateTimeFunction;
   final Color? backgroundColor;
-  WidgetCustomDatePicker(
-      {required this.dateTimeFunction, this.backgroundColor});
+  FlutterCustomCalendar({required this.dateTimeFunction, this.backgroundColor});
   @override
-  _WidgetCustomDatePickerState createState() => _WidgetCustomDatePickerState();
+  _FlutterCustomCalendarState createState() => _FlutterCustomCalendarState();
 }
 
-class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
+class _FlutterCustomCalendarState extends State<FlutterCustomCalendar> {
   List<ModelDatePicker> listMonths = [];
   List<ModelDatePicker> listDays = [];
 
@@ -250,8 +249,8 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25),
                 )),
-            child: Image.asset(
-              "assets/selectDate.png",
+            child: Image.network(
+              "https://firebasestorage.googleapis.com/v0/b/flutter-firebase-361a9.appspot.com/o/selectDate.png?alt=media&token=92ad49a2-32be-4c31-9570-5ab8cbf40b0d",
               height: MediaQuery.of(context).size.height / 4.0,
               width: MediaQuery.of(context).size.width,
             ),
@@ -267,12 +266,12 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                   },
                   child: Container(
                       margin: const EdgeInsets.only(right: 10),
-                      child: widgetMnthYear(
+                      child: widgetMonthYear(
                           title: selectedMonth!.shortMonthName!)),
                 )),
                 Expanded(
                     child: InkWell(
-                  child: widgetMnthYear(title: currentDate.year.toString()),
+                  child: widgetMonthYear(title: currentDate.year.toString()),
                   onTap: () {
                     selectYearPopup(context);
                   },
@@ -354,19 +353,21 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: WidgetButton(
-                            title: "Cancel",
+                          child: ElevatedButton(
+                            child: const Text('Cancel'),
+                            style: ElevatedButton.styleFrom(
+                              primary: widget.backgroundColor ??
+                                  Colors.pink.shade400,
+                              textStyle: GoogleFonts.montserrat(
+                                  color: Colors.white, fontSize: 16),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40))),
+                              shadowColor: Colors.lightBlue,
+                            ),
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            color:
-                                widget.backgroundColor ?? Colors.pink.shade400,
-                            textStyle: GoogleFonts.montserrat(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 16),
-                            borderRadius: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
-                            ),
                           ),
                         ),
                         Expanded(
@@ -374,8 +375,17 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                             margin: const EdgeInsets.only(
                               left: 5,
                             ),
-                            child: WidgetButton(
-                              title: "Apply",
+                            child: ElevatedButton(
+                              child: const Text('Apply'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Theme.of(context).primaryColor,
+                                textStyle: GoogleFonts.montserrat(
+                                    color: Colors.white, fontSize: 16),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(40))),
+                                shadowColor: Colors.lightBlue,
+                              ),
                               onPressed: () {
                                 DateTime tempDate = DateFormat("yyyy-MM-dd")
                                     .parse(selectedDay!.fullDate!);
@@ -383,12 +393,6 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
                                 widget.dateTimeFunction(tempDate);
                                 Navigator.pop(context);
                               },
-                              color: Theme.of(context).primaryColor,
-                              textStyle: GoogleFonts.montserrat(
-                                  color: Colors.white, fontSize: 16),
-                              borderRadius: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              ),
                             ),
                           ),
                         )
@@ -404,7 +408,7 @@ class _WidgetCustomDatePickerState extends State<WidgetCustomDatePicker> {
     );
   }
 
-  Widget widgetMnthYear({String? title}) {
+  Widget widgetMonthYear({String? title}) {
     return Container(
       padding: const EdgeInsets.only(top: 15, bottom: 15, left: 10, right: 10),
       decoration: BoxDecoration(

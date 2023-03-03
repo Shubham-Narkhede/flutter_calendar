@@ -155,7 +155,7 @@ class _WidgetButtonState extends State<WidgetButton> {
                 Text(
                   widget.title == null ? "Title" : widget.title!,
                   style: widget.textStyle != null
-                      ? widget.textStyle
+                      ? widget.textStyle!
                       : TextStyle(
                           color: widget.enumButtonType ==
                                       ButtonType.filledButton ||
@@ -255,36 +255,6 @@ class _WidgetButtonState extends State<WidgetButton> {
             }
           }(),
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: heightWidth(),
-              width: heightWidth(),
-              child: CircularProgressIndicator(
-                strokeWidth: () {
-                  switch (widget.size) {
-                    case ButtonSize.lr:
-                      return 4.0;
-                    case ButtonSize.md:
-                      return 4.0;
-                    case ButtonSize.sm:
-                      return 3.0;
-                    default:
-                      return 3.0;
-                  }
-                }(),
-                backgroundColor: Colors.white,
-                valueColor: widget.color == null
-                    ? widget.progressColor != null
-                        ? AlwaysStoppedAnimation(widget.progressColor)
-                        : AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).primaryColorDark)
-                    : widget.progressColor != null
-                        ? AlwaysStoppedAnimation(widget.progressColor)
-                        : AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).primaryColorDark),
-              ),
-            )
-          ],
         ),
         onPressed: () {
           widget.onPressed();
