@@ -1,3 +1,4 @@
-Add this to your package's `pubspec.yaml` file:
+![Alt Text](https://github.com/Shubham-Narkhede/flutter_calendar/blob/main/Screenshot_1677814585.png)
 
-Now in your `Dart` code, you can use:
+## Getting Started
+https://github.com/Shubham-Narkhede/flutter_calendar/blob/main/lib/fluttercalendar.dart
